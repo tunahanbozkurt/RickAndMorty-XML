@@ -11,7 +11,7 @@ interface RickAndMortyAPI {
 
     @GET("api/character")
     suspend fun getAllCharacters(
-        @Query("page") page: Int? = null
+        @Query("page") page: Int
     ): Response<CharactersListDTO>
 
     @GET("api/character/{id}")

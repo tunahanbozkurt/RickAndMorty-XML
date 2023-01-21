@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AllCharactersRepository {
 
-    fun getAllCharacters(): Flow<PagingData<Result>>
+    fun getAllCharacters(pageSize: Int): Flow<PagingData<Result>>
 }

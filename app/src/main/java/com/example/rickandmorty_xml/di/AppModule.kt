@@ -2,7 +2,6 @@ package com.example.rickandmorty_xml.di
 
 import com.example.rickandmorty_xml.data.remote.RickAndMortyAPI
 import com.example.rickandmorty_xml.data.remote.repository.AllCharactersRepositoryImpl
-import com.example.rickandmorty_xml.data.remote.repository.PagingSource
 import com.example.rickandmorty_xml.domain.repository.AllCharactersRepository
 import com.example.rickandmorty_xml.domain.usecase.GetAllCharactersUseCase
 import dagger.Module
@@ -29,14 +28,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAllCharactersRepository(pagingSource: PagingSource): AllCharactersRepository {
-        return AllCharactersRepositoryImpl(pagingSource = pagingSource)
-    }
-
-    @Provides
-    @Singleton
-    fun providePagingSource(api: RickAndMortyAPI): PagingSource {
-        return PagingSource(api)
+    fun provideAllCharactersRepo(api: RickAndMortyAPI): AllCharactersRepository {
+        return AllCharactersRepositoryImpl(api = api)
     }
 
     @Provides
