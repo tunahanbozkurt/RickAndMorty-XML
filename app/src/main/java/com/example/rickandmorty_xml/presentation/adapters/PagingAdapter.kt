@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.data.remote.dto.getAllCharacters.Result
+import com.example.rickandmorty_xml.databinding.CharacterCardBinding
+import kotlin.random.Random
 
 class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCallback) {
     
     companion object {
+        const val ITEM_TYPE = 1001
+
         val diffCallback = object : DiffUtil.ItemCallback<Result>() {
             override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
                 return oldItem.id == newItem.id
@@ -27,9 +31,9 @@ class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCal
         }
     }
     
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val textView: TextView = view.findViewById(R.id.character_name)
-        private val imageView: ImageView = view.findViewById(R.id.character_image)
+    class ViewHolder(binding: CharacterCardBinding): RecyclerView.ViewHolder(binding.root) {
+        private val textView: TextView = binding.characterName
+        private val imageView: ImageView = binding.characterImage
 
         fun bind(item: Result?) {
             textView.text = item?.name ?: "Couldn't load"
@@ -45,9 +49,17 @@ class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCal
         holder.bind(item)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return ITEM_TYPE
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.character_card, parent, false)
-        return ViewHolder(view)
+        val binding = CharacterCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 }
 
