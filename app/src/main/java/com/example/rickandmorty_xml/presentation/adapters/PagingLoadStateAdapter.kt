@@ -1,25 +1,22 @@
 package com.example.rickandmorty_xml.presentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
-import androidx.paging.PagingData
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rickandmorty_xml.databinding.CharacterCardBinding
 import com.example.rickandmorty_xml.databinding.LoadStateFooterBinding
 
-class PagingLoadStateAdapter(private val retry: () -> Unit): LoadStateAdapter<PagingLoadStateAdapter.ViewHolder>() {
+class PagingLoadStateAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<PagingLoadStateAdapter.ViewHolder>() {
 
     companion object {
         const val ITEM_TYPE = 1002
     }
 
-    inner class ViewHolder(private val binding: LoadStateFooterBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: LoadStateFooterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.retry.setOnClickListener {
@@ -29,7 +26,9 @@ class PagingLoadStateAdapter(private val retry: () -> Unit): LoadStateAdapter<Pa
 
         fun bind(loadState: LoadState) {
             binding.apply {
-               /*TODO*/
+                errorMessage.isVisible = loadState is LoadState.Error
+                retry.isVisible = loadState is LoadState.Error
+                progressBar.isVisible = loadState is LoadState.Loading
             }
         }
     }

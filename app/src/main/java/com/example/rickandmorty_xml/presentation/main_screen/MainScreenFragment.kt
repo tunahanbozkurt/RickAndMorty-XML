@@ -2,31 +2,23 @@ package com.example.rickandmorty_xml.presentation.main_screen
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.Config
 import androidx.paging.LoadState
-import androidx.paging.LoadStateAdapter
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.ConcatAdapter.Config
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
 import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
-import com.example.rickandmorty_xml.util.setGone
-import com.example.rickandmorty_xml.util.setVisible
+import com.example.rickandmorty_xml.util.withLoadStateHeaderAndFooterAndConfig
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 const val SPAN_COUNT = 2
+const val SINGLE_SPAN_COUNT = 1
 
 @AndroidEntryPoint
 class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>(
@@ -38,17 +30,24 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupLayout()
         setupRecyclerView()
-        loadPagedData()
+        subscribePagination()
+    }
+
+    private fun setupLayout() {
+        binding.errorViewBinding.retry.setOnClickListener {
+            pagingAdapter.retry()
+        }
     }
 
     private fun setupRecyclerView() {
-        pagingAdapter = PagingAdapter()
-        setupLayoutManager()
         setupRecyclerViewAdapter()
+        setupLayoutManager()
     }
 
     private fun setupRecyclerViewAdapter() {
+        pagingAdapter = PagingAdapter()
         binding.recyclerView.apply {
             adapter = pagingAdapter.withLoadStateHeaderAndFooterAndConfig(
                 header = PagingLoadStateAdapter {
@@ -74,10 +73,10 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
                                 SPAN_COUNT
                             }
                             PagingAdapter.ITEM_TYPE -> {
-                                1
+                                SINGLE_SPAN_COUNT
                             }
                             else -> {
-                                1
+                                SINGLE_SPAN_COUNT
                             }
                         }
                     }
@@ -86,7 +85,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         }
     }
 
-    private fun loadPagedData() {
+    private fun subscribePagination() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -94,21 +93,13 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
                         pagingAdapter.submitData(pagedData)
                     }
                 }
+
+                launch {
+                    pagingAdapter.loadStateFlow.collectLatest {
+                        binding.errorViewBinding.errorView.isVisible = it.refresh is LoadState.Error
+                    }
+                }
             }
         }
-    }
-
-    private fun PagingDataAdapter<*, *>.withLoadStateHeaderAndFooterAndConfig(
-        header: LoadStateAdapter<*>,
-        footer: LoadStateAdapter<*>
-    ): ConcatAdapter {
-        val config = Config.Builder()
-            .setIsolateViewTypes(false).build()
-
-        this.addLoadStateListener { loadStates ->
-            header.loadState = loadStates.prepend
-            footer.loadState = loadStates.append
-        }
-        return ConcatAdapter(config, header, this, footer)
     }
 }

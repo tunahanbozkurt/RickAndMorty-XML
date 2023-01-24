@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">RickAndMorty-XML</string>
-    <string name="something_went_wrong">Oops! Something went wrong</string>
-    <string name="retry_button_text">RETRY</string>
+    <string name="something_went_wrong">Hay aksi! Bir şeyler yanlış gitti</string>
+    <string name="retry_button_text">YENİDEN DENE</string>
     <string name="content_description">null</string>
 </resources>
