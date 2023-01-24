@@ -1,7 +1,6 @@
 package com.example.rickandmorty_xml.presentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,10 +11,10 @@ import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.data.remote.dto.getAllCharacters.Result
 import com.example.rickandmorty_xml.databinding.CharacterCardBinding
-import kotlin.random.Random
 
-class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCallback) {
-    
+class PagingAdapter(private val onItemClickListener: () -> Unit) :
+    PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCallback) {
+
     companion object {
         const val ITEM_TYPE = 1001
 
@@ -30,18 +29,28 @@ class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCal
 
         }
     }
-    
-    class ViewHolder(binding: CharacterCardBinding): RecyclerView.ViewHolder(binding.root) {
+
+    inner class ViewHolder(binding: CharacterCardBinding) : RecyclerView.ViewHolder(binding.root) {
         private val textView: TextView = binding.characterName
         private val imageView: ImageView = binding.characterImage
+        private val characterCard: ViewGroup = binding.characterCard
+
+        init {
+
+            characterCard.setOnClickListener {
+                onItemClickListener()
+            }
+        }
 
         fun bind(item: Result?) {
-            textView.text = item?.name ?: "Couldn't load"
+            textView.text =
+                item?.name ?: itemView.context.getString(R.string.couldnt_loaded_message)
             imageView.load(item?.image) {
                 crossfade(true)
                 crossfade(1000)
             }
         }
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -62,6 +71,7 @@ class PagingAdapter: PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCal
         return ViewHolder(binding)
     }
 }
+
 
 
 

@@ -4,4 +4,5 @@
     <string name="something_went_wrong">Oops! Something went wrong</string>
     <string name="retry_button_text">RETRY</string>
     <string name="content_description">null</string>
+    <string name="couldnt_loaded_message">Couldn\'t loaded</string>
 </resources>

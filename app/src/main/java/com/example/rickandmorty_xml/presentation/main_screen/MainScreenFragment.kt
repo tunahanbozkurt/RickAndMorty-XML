@@ -47,7 +47,9 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     }
 
     private fun setupRecyclerViewAdapter() {
-        pagingAdapter = PagingAdapter()
+        pagingAdapter = PagingAdapter {
+            onItemClickListener()
+        }
         binding.recyclerView.apply {
             adapter = pagingAdapter.withLoadStateHeaderAndFooterAndConfig(
                 header = PagingLoadStateAdapter {
@@ -58,6 +60,10 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
                 }
             )
         }
+    }
+
+    private fun onItemClickListener() {
+        /*TODO*/
     }
 
     private fun setupLayoutManager() {
