@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<VB: ViewBinding, VM: BaseViewModel>(
+abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     private val bindingInflater: (inflater: LayoutInflater) -> VB,
     private val viewModelClass: Class<VM>
 
-): Fragment() {
+) : Fragment() {
 
     private var _binding: VB? = null
     private var _viewModel: VM? = null

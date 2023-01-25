@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
 import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
@@ -26,6 +27,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     MainScreenVM::class.java
 ) {
     private lateinit var pagingAdapter: PagingAdapter
+    private lateinit var pagingLoadStateAdapter: PagingLoadStateAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,32 +50,30 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
     private fun setupRecyclerViewAdapter() {
         pagingAdapter = PagingAdapter {
-            onItemClickListener()
+            onItemClickListener(it)
+        }.also {
+            it.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
+        pagingLoadStateAdapter = PagingLoadStateAdapter { pagingAdapter.retry() }
         binding.recyclerView.apply {
             adapter = pagingAdapter.withLoadStateHeaderAndFooterAndConfig(
-                header = PagingLoadStateAdapter {
-                    pagingAdapter.retry()
-                },
-                footer = PagingLoadStateAdapter {
-                    pagingAdapter.retry()
-                }
+                footer = pagingLoadStateAdapter
             )
         }
     }
 
-    private fun onItemClickListener() {
+    private fun onItemClickListener(id: Int) {
         /*TODO*/
     }
 
     private fun setupLayoutManager() {
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(
-                activity, SPAN_COUNT, GridLayoutManager.VERTICAL, false
+                requireContext(), SPAN_COUNT, GridLayoutManager.VERTICAL, false
             ).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return when(adapter?.getItemViewType(position)) {
+                        return when (adapter?.getItemViewType(position)) {
 
                             PagingLoadStateAdapter.ITEM_TYPE -> {
                                 SPAN_COUNT
@@ -95,14 +95,15 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.loadPagedData().collect { pagedData ->
+                    viewModel.pagedItems.collect { pagedData ->
                         pagingAdapter.submitData(pagedData)
                     }
                 }
 
                 launch {
                     pagingAdapter.loadStateFlow.collectLatest {
-                        binding.errorViewBinding.errorView.isVisible = it.refresh is LoadState.Error
+                        binding.errorViewBinding.errorView.isVisible =
+                            it.refresh is LoadState.Error && pagingAdapter.itemCount == 0
                     }
                 }
             }

@@ -16,6 +16,6 @@ interface RickAndMortyAPI {
 
     @GET("api/character/{id}")
     suspend fun getSingleCharacter(
-        @Path("id") id: Int? = 1
+        @Path("id") id: Int
     ): Response<CharacterDTO>
 }

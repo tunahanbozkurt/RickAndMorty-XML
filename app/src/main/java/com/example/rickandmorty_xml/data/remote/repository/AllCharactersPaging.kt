@@ -13,33 +13,30 @@ import java.io.IOException
 class AllCharactersPaging(
     private val api: RickAndMortyAPI,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): PagingSource<Int, Result>() {
+) : PagingSource<Int, Result>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Result> {
-         return try {
+        return try {
             val currentPage = params.key ?: 1
             val response = withContext(ioDispatcher) {
                 val request = api.getAllCharacters(currentPage)
 
                 if (request.isSuccessful) {
                     return@withContext request.body()
-                }
-                else {
+                } else {
                     throw HttpException(request)
                 }
             }
 
-             LoadResult.Page(
+            LoadResult.Page(
                 data = response!!.results,
                 prevKey = null,
-                nextKey = currentPage.plus(1) ,
+                nextKey = currentPage.plus(1),
             )
 
-        }
-        catch (e: HttpException) {
+        } catch (e: HttpException) {
             LoadResult.Error(e)
-        }
-        catch (e: IOException) {
+        } catch (e: IOException) {
             LoadResult.Error(e)
         }
     }

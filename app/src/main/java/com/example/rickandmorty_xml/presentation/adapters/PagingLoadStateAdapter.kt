@@ -20,7 +20,7 @@ class PagingLoadStateAdapter(private val retry: () -> Unit) :
 
         init {
             binding.retry.setOnClickListener {
-                retry.invoke()
+                retry()
             }
         }
 

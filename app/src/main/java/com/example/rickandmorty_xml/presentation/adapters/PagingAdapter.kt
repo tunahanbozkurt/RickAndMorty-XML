@@ -2,8 +2,6 @@ package com.example.rickandmorty_xml.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,11 +10,12 @@ import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.data.remote.dto.getAllCharacters.Result
 import com.example.rickandmorty_xml.databinding.CharacterCardBinding
 
-class PagingAdapter(private val onItemClickListener: () -> Unit) :
+class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
     PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
         const val ITEM_TYPE = 1001
+        const val CROSS_FADE_MILLIS = 1000
 
         val diffCallback = object : DiffUtil.ItemCallback<Result>() {
             override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
@@ -30,27 +29,32 @@ class PagingAdapter(private val onItemClickListener: () -> Unit) :
         }
     }
 
-    inner class ViewHolder(binding: CharacterCardBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val textView: TextView = binding.characterName
-        private val imageView: ImageView = binding.characterImage
-        private val characterCard: ViewGroup = binding.characterCard
+    inner class ViewHolder(
+        private val binding: CharacterCardBinding,
+        private val onItemClicked: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-
-            characterCard.setOnClickListener {
-                onItemClickListener()
+            binding.characterCard.setOnClickListener {
+                onItemClicked(bindingAdapterPosition)
             }
         }
 
         fun bind(item: Result?) {
-            textView.text =
-                item?.name ?: itemView.context.getString(R.string.couldnt_loaded_message)
-            imageView.load(item?.image) {
-                crossfade(true)
-                crossfade(1000)
+            binding.apply {
+
+                characterName.text =
+                    item?.name ?: itemView.context.getString(R.string.couldnt_loaded_message)
+
+                characterImage.load(item?.image) {
+                    placeholder(R.drawable.ic_launcher_background)
+                    size(150,150)
+                    crossfade(true)
+                    crossfade(CROSS_FADE_MILLIS)
+
+                }
             }
         }
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -68,7 +72,9 @@ class PagingAdapter(private val onItemClickListener: () -> Unit) :
             parent,
             false
         )
-        return ViewHolder(binding)
+        return ViewHolder(binding) {
+            onItemClickListener(getItem(it)?.id ?: 1)
+        }
     }
 }
 
