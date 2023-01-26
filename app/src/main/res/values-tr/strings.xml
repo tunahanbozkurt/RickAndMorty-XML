@@ -5,4 +5,5 @@
     <string name="retry_button_text">YENİDEN DENE</string>
     <string name="content_description">null</string>
     <string name="couldnt_loaded_message">Yüklenemedi</string>
+    <string name="isAliveSpecies">%1$s - %2$s</string>
 </resources>

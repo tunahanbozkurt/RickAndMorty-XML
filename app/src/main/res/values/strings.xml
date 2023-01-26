@@ -5,4 +5,5 @@
     <string name="retry_button_text">RETRY</string>
     <string name="content_description">null</string>
     <string name="couldnt_loaded_message">Couldn\'t loaded</string>
+    <string name="isAliveSpecies">%1$s - %2$s</string>
 </resources>

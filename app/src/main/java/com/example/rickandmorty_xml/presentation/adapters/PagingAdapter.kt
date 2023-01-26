@@ -25,7 +25,6 @@ class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
             override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 
@@ -44,15 +43,36 @@ class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
             binding.apply {
 
                 characterName.text =
-                    item?.name ?: itemView.context.getString(R.string.couldnt_loaded_message)
+                    item?.name.toString().replaceFirstChar { it.uppercase() }
 
                 characterImage.load(item?.image) {
-                    placeholder(R.drawable.ic_launcher_background)
-                    size(150,150)
                     crossfade(true)
                     crossfade(CROSS_FADE_MILLIS)
-
                 }
+
+                isAliveDot.setImageResource(
+                    when (item?.status) {
+                        "Alive" -> {
+                            R.drawable.green_dot
+                        }
+                        "Dead" -> {
+                            R.drawable.red_dot
+                        }
+                        else -> {
+                            R.drawable.gray_dot
+                        }
+                    }
+                )
+                origin.text = item?.origin?.name.toString().replaceFirstChar { it.uppercase() }
+
+                isAliveAndSpecies.text = binding.isAliveAndSpecies
+                    .context.getString(
+                        R.string.isAliveSpecies,
+                        item?.status.toString().replaceFirstChar { it.uppercase() },
+                        item?.species.toString().replaceFirstChar { it.uppercase() }
+                    )
+
+                lastKnownLocation.text = item?.location?.name.toString().replaceFirstChar { it.uppercase() }
             }
         }
     }

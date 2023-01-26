@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
 import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
@@ -17,9 +17,6 @@ import com.example.rickandmorty_xml.util.withLoadStateHeaderAndFooterAndConfig
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
-const val SPAN_COUNT = 2
-const val SINGLE_SPAN_COUNT = 1
 
 @AndroidEntryPoint
 class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>(
@@ -68,26 +65,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
     private fun setupLayoutManager() {
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(
-                requireContext(), SPAN_COUNT, GridLayoutManager.VERTICAL, false
-            ).apply {
-                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-                        return when (adapter?.getItemViewType(position)) {
-
-                            PagingLoadStateAdapter.ITEM_TYPE -> {
-                                SPAN_COUNT
-                            }
-                            PagingAdapter.ITEM_TYPE -> {
-                                SINGLE_SPAN_COUNT
-                            }
-                            else -> {
-                                SINGLE_SPAN_COUNT
-                            }
-                        }
-                    }
-                }
-            }
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 

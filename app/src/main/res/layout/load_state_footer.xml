@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingBottom="20dp">
+    android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/error_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/something_went_wrong" />
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
 
-    <Button
-        android:id="@+id/retry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/retry_button_text" />
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/something_went_wrong" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/retry_button_text" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
 
