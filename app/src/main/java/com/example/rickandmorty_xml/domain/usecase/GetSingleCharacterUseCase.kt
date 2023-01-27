@@ -2,13 +2,15 @@ package com.example.rickandmorty_xml.domain.usecase
 
 import com.example.rickandmorty_xml.data.remote.dto.getSingleCharacter.CharacterDTO
 import com.example.rickandmorty_xml.domain.repository.SingleCharacterRepository
-import retrofit2.Response
+import com.example.rickandmorty_xml.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 class GetSingleCharacterUseCase(
     private val repository: SingleCharacterRepository
 ) {
 
-    suspend operator fun invoke(id: Int): Response<CharacterDTO> {
-        return repository.getSingleCharacter(id)
+    operator fun invoke(id: Int): Flow<Resource<CharacterDTO>> {
+        return repository.loadCharacterById(id)
     }
+
 }

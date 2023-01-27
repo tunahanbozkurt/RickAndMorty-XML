@@ -7,22 +7,30 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.rickandmorty_xml.R
-import com.example.rickandmorty_xml.data.remote.dto.getAllCharacters.Result
 import com.example.rickandmorty_xml.databinding.CharacterCardBinding
+import com.example.rickandmorty_xml.domain.model.CharacterCardModel
 
 class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
-    PagingDataAdapter<Result, PagingAdapter.ViewHolder>(diffCallback) {
+    PagingDataAdapter<CharacterCardModel, PagingAdapter.ViewHolder>(diffCallback) {
 
     companion object {
         const val ITEM_TYPE = 1001
         const val CROSS_FADE_MILLIS = 1000
+        const val ALIVE = "Alive"
+        const val DEAD = "Dead"
 
-        val diffCallback = object : DiffUtil.ItemCallback<Result>() {
-            override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<CharacterCardModel>() {
+            override fun areItemsTheSame(
+                oldItem: CharacterCardModel,
+                newItem: CharacterCardModel
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+            override fun areContentsTheSame(
+                oldItem: CharacterCardModel,
+                newItem: CharacterCardModel
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -39,23 +47,25 @@ class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
             }
         }
 
-        fun bind(item: Result?) {
+        fun bind(item: CharacterCardModel) {
             binding.apply {
+                characterName.text = item.characterName
+                origin.text = item.origin
+                lastKnownLocation.text = item.lastKnownLocation
 
-                characterName.text =
-                    item?.name.toString().replaceFirstChar { it.uppercase() }
-
-                characterImage.load(item?.image) {
-                    crossfade(true)
-                    crossfade(CROSS_FADE_MILLIS)
-                }
+                isAliveAndSpecies.text = binding.isAliveAndSpecies
+                    .context.getString(
+                        R.string.isAliveSpecies,
+                        item.isAlive,
+                        item.species
+                    )
 
                 isAliveDot.setImageResource(
-                    when (item?.status) {
-                        "Alive" -> {
+                    when (item.isAlive) {
+                        ALIVE -> {
                             R.drawable.green_dot
                         }
-                        "Dead" -> {
+                        DEAD -> {
                             R.drawable.red_dot
                         }
                         else -> {
@@ -63,23 +73,18 @@ class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
                         }
                     }
                 )
-                origin.text = item?.origin?.name.toString().replaceFirstChar { it.uppercase() }
 
-                isAliveAndSpecies.text = binding.isAliveAndSpecies
-                    .context.getString(
-                        R.string.isAliveSpecies,
-                        item?.status.toString().replaceFirstChar { it.uppercase() },
-                        item?.species.toString().replaceFirstChar { it.uppercase() }
-                    )
-
-                lastKnownLocation.text = item?.location?.name.toString().replaceFirstChar { it.uppercase() }
+                characterImage.load(item.characterImageUrl) {
+                    crossfade(true)
+                    crossfade(CROSS_FADE_MILLIS)
+                }
             }
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        item?.let { holder.bind(item) }
     }
 
     override fun getItemViewType(position: Int): Int {

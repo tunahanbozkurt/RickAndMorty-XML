@@ -6,9 +6,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
 import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
@@ -46,11 +46,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     }
 
     private fun setupRecyclerViewAdapter() {
-        pagingAdapter = PagingAdapter {
-            onItemClickListener(it)
-        }.also {
-            it.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-        }
+        pagingAdapter = PagingAdapter(this::onItemClickListener)
         pagingLoadStateAdapter = PagingLoadStateAdapter { pagingAdapter.retry() }
         binding.recyclerView.apply {
             adapter = pagingAdapter.withLoadStateHeaderAndFooterAndConfig(
@@ -59,8 +55,10 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         }
     }
 
-    private fun onItemClickListener(id: Int) {
-        /*TODO*/
+    private fun onItemClickListener(characterId: Int) {
+        val action = MainScreenFragmentDirections
+            .actionMainScreenFragmentToDetailScreenFragment(characterId)
+        findNavController().navigate(action)
     }
 
     private fun setupLayoutManager() {
@@ -73,9 +71,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.pagedItems.collect { pagedData ->
-                        pagingAdapter.submitData(pagedData)
-                    }
+                    viewModel.pagedItems.collectLatest(pagingAdapter::submitData)
                 }
 
                 launch {

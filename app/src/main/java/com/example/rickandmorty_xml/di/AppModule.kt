@@ -6,6 +6,8 @@ import com.example.rickandmorty_xml.data.remote.repository.SingleCharacterReposi
 import com.example.rickandmorty_xml.domain.repository.AllCharactersRepository
 import com.example.rickandmorty_xml.domain.repository.SingleCharacterRepository
 import com.example.rickandmorty_xml.domain.usecase.GetAllCharactersUseCase
+import com.example.rickandmorty_xml.domain.usecase.GetSingleCharacterUseCase
+import com.example.rickandmorty_xml.domain.usecase.UseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,16 +39,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUseCase(repository: AllCharactersRepository): GetAllCharactersUseCase {
-        return GetAllCharactersUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
     fun provideSingleCharacterRepo(
         api: RickAndMortyAPI,
         @Dispatchers.DispatcherIO dispatcherIO: CoroutineDispatcher
     ): SingleCharacterRepository {
         return SingleCharacterRepositoryImpl(api = api, dispatcherIO)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUseCases(
+        allCharactersRepository: AllCharactersRepository,
+        singleCharacterRepository: SingleCharacterRepository
+    ): UseCases {
+        return UseCases(
+            getAllCharactersUseCase = GetAllCharactersUseCase(allCharactersRepository),
+            getSingleCharacterUseCase = GetSingleCharacterUseCase(singleCharacterRepository)
+        )
     }
 }

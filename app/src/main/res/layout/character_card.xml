@@ -18,7 +18,6 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
-
             app:shapeAppearanceOverlay="@style/roundedImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +54,7 @@
             android:layout_marginStart="8dp"
             android:text="Alive - Human"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
             app:layout_constraintEnd_toEndOf="@+id/character_name"
             app:layout_constraintStart_toEndOf="@+id/isAliveDot"
@@ -68,7 +67,7 @@
             android:layout_marginTop="4dp"
             android:text="Last known Location:"
             android:textColor="#9E9E9E"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="@+id/isAliveAndSpecies"
             app:layout_constraintStart_toStartOf="@+id/isAliveDot"
             app:layout_constraintTop_toBottomOf="@+id/isAliveAndSpecies" />
@@ -92,7 +91,7 @@
             android:layout_marginTop="8dp"
             android:text="Origin:"
             android:textColor="#9E9E9E"
-            android:textSize="10sp"
+            android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="@+id/last_known_location"
             app:layout_constraintStart_toStartOf="@+id/last_known_location"
             app:layout_constraintTop_toBottomOf="@+id/last_known_location" />
@@ -104,7 +103,9 @@
             android:layout_marginTop="4dp"
             android:text="The Ricklantis Mixup"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="11sp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="@+id/textView4"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />

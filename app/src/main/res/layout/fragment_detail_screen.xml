@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.detail_screen.DetailScreenFragment">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/character_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/fullyRoundedImageView" />
+
+
+    <TextView
+        android:id="@+id/character_name"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="36dp"
+        android:text="Morty Smith"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/character_image"
+        app:layout_constraintEnd_toEndOf="@+id/character_image"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/character_image" />
+
+    <ImageView
+        android:id="@+id/isAliveDot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/green_dot"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/character_name"
+        app:layout_constraintTop_toBottomOf="@+id/character_name" />
+
+    <TextView
+        android:id="@+id/status_and_species"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Alive - Human"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
+        app:layout_constraintEnd_toEndOf="@+id/character_name"
+        app:layout_constraintStart_toEndOf="@+id/isAliveDot"
+        app:layout_constraintTop_toTopOf="@+id/isAliveDot" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

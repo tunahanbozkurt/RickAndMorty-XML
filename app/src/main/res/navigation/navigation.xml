@@ -18,5 +18,8 @@
         android:id="@+id/detailScreenFragment"
         android:name="com.example.rickandmorty_xml.presentation.detail_screen.DetailScreenFragment"
         android:label="fragment_detail_screen"
-        tools:layout="@layout/fragment_detail_screen" />
+        tools:layout="@layout/fragment_detail_screen" >
+        <argument android:name="characterId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
