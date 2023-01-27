@@ -13,6 +13,7 @@ import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
 import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
+import com.example.rickandmorty_xml.util.setupLoadingScreen
 import com.example.rickandmorty_xml.util.withLoadStateHeaderAndFooterAndConfig
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -63,7 +64,8 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
     private fun setupLayoutManager() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -76,8 +78,10 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
                 launch {
                     pagingAdapter.loadStateFlow.collectLatest {
-                        binding.errorViewBinding.errorView.isVisible =
-                            it.refresh is LoadState.Error && pagingAdapter.itemCount == 0
+                        val isError = it.refresh is LoadState.Error && pagingAdapter.itemCount == 0
+                        val isLoading = it.refresh is LoadState.Loading && pagingAdapter.itemCount == 0
+                        binding.errorViewBinding.errorView.isVisible = isError
+                        binding.loadingLayout.setupLoadingScreen(isLoading)
                     }
                 }
             }

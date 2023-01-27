@@ -1,8 +1,8 @@
 package com.example.rickandmorty_xml.data.remote.repository
 
 import com.example.rickandmorty_xml.data.remote.RickAndMortyAPI
-import com.example.rickandmorty_xml.data.remote.dto.getSingleCharacter.CharacterDTO
 import com.example.rickandmorty_xml.di.Dispatchers
+import com.example.rickandmorty_xml.domain.model.CharacterDetailModel
 import com.example.rickandmorty_xml.domain.repository.SingleCharacterRepository
 import com.example.rickandmorty_xml.util.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,12 +17,12 @@ class SingleCharacterRepositoryImpl(
     @Dispatchers.DispatcherIO private val dispatcherIO: CoroutineDispatcher
 ) : SingleCharacterRepository {
 
-    override fun loadCharacterById(id: Int): Flow<Resource<CharacterDTO>> = flow {
+    override fun loadCharacterById(id: Int): Flow<Resource<CharacterDetailModel>> = flow {
         emit(Resource.Loading())
         val response = api.getSingleCharacter(id)
         if (response.isSuccessful) {
-            val nonNullableBody: CharacterDTO = response.body()!!
-            emit(Resource.Success(nonNullableBody))
+            val model: CharacterDetailModel = response.body()!!.toCharacterDetailModel()
+            emit(Resource.Success(model))
         } else {
             throw HttpException(response)
         }

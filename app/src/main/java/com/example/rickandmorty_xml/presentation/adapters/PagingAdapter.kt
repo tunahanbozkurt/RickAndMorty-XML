@@ -74,7 +74,7 @@ class PagingAdapter(private val onItemClickListener: (Int) -> Unit) :
                     }
                 )
 
-                characterImage.load(item.characterImageUrl) {
+                characterImage.load(item.imageUrl) {
                     crossfade(true)
                     crossfade(CROSS_FADE_MILLIS)
                 }

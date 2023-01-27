@@ -21,7 +21,7 @@ data class AllCharactersResult(
         return CharacterCardModel(
             id = id,
             characterName = name.replaceFirstChar { it.uppercase() },
-            characterImageUrl = image,
+            imageUrl = image,
             isAlive = status.replaceFirstChar { it.uppercase() },
             origin = origin.name.replaceFirstChar { it.uppercase() },
             species = species.replaceFirstChar { it.uppercase() },

@@ -6,10 +6,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import coil.load
+import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.databinding.FragmentDetailScreenBinding
+import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
+import com.example.rickandmorty_xml.util.setupLoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScreenVM>(
@@ -34,11 +39,37 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.detailScreenState.collect {
-                        binding.characterName.text = it?.name
-                    }
+                    viewModel.detailScreenState.collect(this@DetailScreenFragment::setupDetails)
                 }
             }
+        }
+    }
+
+    private fun setupDetails(states: DetailScreenUIStates) {
+        binding.apply {
+
+            binding.loadingLayout.setupLoadingScreen(states.isLoading)
+
+            characterImage.load(states.model?.imageUrl) {
+                crossfade(true)
+                crossfade(PagingAdapter.CROSS_FADE_MILLIS)
+            }
+
+            characterName.text = states.model?.characterName
+
+            statusAndSpecies.text = requireContext().getString(
+                R.string.isAliveSpecies,
+                states.model?.isAlive,
+                states.model?.species
+            )
+
+            val isAliveDotResource = when(states.model?.isAlive) {
+                PagingAdapter.ALIVE -> { R.drawable.green_dot }
+                PagingAdapter.DEAD -> { R.drawable.red_dot }
+                else -> { R.drawable.gray_dot }
+            }
+
+            isAliveDot.setImageResource(isAliveDotResource)
         }
     }
 }
