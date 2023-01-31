@@ -1,12 +1,10 @@
 package com.example.rickandmorty_xml.di
 
 import com.example.rickandmorty_xml.data.remote.RickAndMortyAPI
-import com.example.rickandmorty_xml.data.remote.dataSource.CharactersDataSourceImpl
+import com.example.rickandmorty_xml.data.remote.dataSource.RemoteDataSourceImpl
 import com.example.rickandmorty_xml.data.remote.repository.CharactersRepositoryImpl
-import com.example.rickandmorty_xml.domain.dataSource.CharactersDataSource
-import com.example.rickandmorty_xml.domain.usecase.GetAllCharactersUseCase
-import com.example.rickandmorty_xml.domain.usecase.GetSingleCharacterUseCase
-import com.example.rickandmorty_xml.domain.usecase.UseCases
+import com.example.rickandmorty_xml.domain.dataSource.RemoteDataSource
+import com.example.rickandmorty_xml.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +33,9 @@ object AppModule {
     fun provideUseCases(repository: CharactersRepositoryImpl): UseCases {
         return UseCases(
             getAllCharactersUseCase = GetAllCharactersUseCase(repository),
-            getSingleCharacterUseCase = GetSingleCharacterUseCase(repository)
+            getSingleCharacterUseCase = GetSingleCharacterUseCase(repository),
+            getCharacterLocationUseCase = GetCharacterLocationUseCase(repository),
+            getMultipleCharactersUseCase = GetMultipleCharactersUseCase(repository)
         )
     }
 
@@ -44,13 +44,13 @@ object AppModule {
     fun provideCharactersDataSource(
         api: RickAndMortyAPI,
         @Dispatchers.DispatcherIO dispatcherIO: CoroutineDispatcher
-    ): CharactersDataSource {
-        return CharactersDataSourceImpl(api = api, dispatcherIO = dispatcherIO)
+    ): RemoteDataSource {
+        return RemoteDataSourceImpl(api = api, dispatcherIO = dispatcherIO)
     }
 
     @Provides
     @Singleton
-    fun provideCharactersRepository(dataSource: CharactersDataSource): CharactersRepositoryImpl {
+    fun provideCharactersRepository(dataSource: RemoteDataSource): CharactersRepositoryImpl {
         return CharactersRepositoryImpl(dataSource)
     }
 }

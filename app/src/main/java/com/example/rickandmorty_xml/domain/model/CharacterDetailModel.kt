@@ -5,5 +5,6 @@ data class CharacterDetailModel(
     val characterName: String,
     val isAlive: String,
     val species: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val locationUrl: String
 )

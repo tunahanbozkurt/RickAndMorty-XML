@@ -6,16 +6,29 @@ sealed class Resource<T> {
     data class Error<T>(val message: String) : Resource<T>()
 }
 
-fun <T, K> Resource<T>.convert(block: (T) -> K): Resource<K> {
-    return when (this) {
-        is Resource.Loading -> {
-            Resource.Loading()
-        }
-        is Resource.Success -> {
-            Resource.Success(block.invoke(this.data))
-        }
-        is Resource.Error -> {
-            Resource.Error(this.message)
-        }
+suspend fun <T, K> Resource<T>.onSuccess(
+    onSuccess: suspend (Resource.Success<T>) -> K,
+): K? {
+   if (this is Resource.Success) {
+       return onSuccess(this)
+   }
+    return null
+}
+
+suspend fun <T, K> Resource<T>.onError(
+    onError: suspend (Resource.Error<T>) -> K,
+): K? {
+    if (this is Resource.Error) {
+        return onError(this)
     }
+    return null
+}
+
+suspend fun <T, K> Resource<T>.onLoading(
+    onLoading: suspend (Resource.Loading<T>) -> K,
+): K? {
+    if (this is Resource.Loading) {
+        return onLoading(this)
+    }
+    return null
 }

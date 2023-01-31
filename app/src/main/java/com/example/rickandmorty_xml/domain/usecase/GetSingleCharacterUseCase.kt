@@ -10,7 +10,7 @@ class GetSingleCharacterUseCase(
 ) {
 
     operator fun invoke(id: Int): Flow<Resource<CharacterDetailModel>> {
-        return repository.loadCharacterById(id)
+        return repository.getCharacterById(id)
     }
 
 }

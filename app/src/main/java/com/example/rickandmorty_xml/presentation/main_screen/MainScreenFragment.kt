@@ -14,7 +14,7 @@ import com.example.rickandmorty_xml.presentation.adapters.CharactersPagingAdapte
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
-import com.example.rickandmorty_xml.util.withLoadStateHeaderAndFooterAndConfig
+import com.example.rickandmorty_xml.util.withLoadStateFooterAndConfig
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,7 +50,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         charactersPagingAdapter = CharactersPagingAdapter(this::onItemClickListener)
         pagingLoadStateAdapter = PagingLoadStateAdapter { charactersPagingAdapter.retry() }
         binding.recyclerView.apply {
-            adapter = charactersPagingAdapter.withLoadStateHeaderAndFooterAndConfig(
+            adapter = charactersPagingAdapter.withLoadStateFooterAndConfig(
                 footer = pagingLoadStateAdapter
             )
         }

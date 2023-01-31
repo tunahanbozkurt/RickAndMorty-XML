@@ -24,7 +24,8 @@ data class SingleCharacterDTO(
             characterName = name.uppercaseFirst(),
             isAlive = status.uppercaseFirst(),
             species = species.uppercaseFirst(),
-            imageUrl = image
+            imageUrl = image,
+            locationUrl = location.url
         )
     }
 }

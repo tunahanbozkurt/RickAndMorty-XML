@@ -2,23 +2,19 @@ package com.example.rickandmorty_xml.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty_xml.databinding.DetailsRecyclerviewBinding
 
-class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
+class DetailsAdapter(
+    val onItemClickListener: (Int) -> Unit
+) : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: DetailsRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(itemType: String) {
-
+        init {
             binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(
-                    binding.recyclerView.context,
-                    LinearLayoutManager.VERTICAL,
-                    false
-                )
+
             }
         }
     }
@@ -37,6 +33,6 @@ class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder
     }
 }

@@ -1,13 +1,14 @@
 package com.example.rickandmorty_xml.presentation.detail_screen
 
 import androidx.lifecycle.viewModelScope
+import com.example.rickandmorty_xml.domain.model.CharacterCardModel
 import com.example.rickandmorty_xml.domain.usecase.UseCases
 import com.example.rickandmorty_xml.presentation.base.BaseViewModel
-import com.example.rickandmorty_xml.util.Resource
+import com.example.rickandmorty_xml.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,36 +24,55 @@ class DetailScreenVM @Inject constructor(
     )
     val detailScreenState: StateFlow<DetailScreenUIStates> = _detailScreenState
 
+    private val _locationList: MutableStateFlow<List<CharacterCardModel>> = MutableStateFlow(
+        emptyList()
+    )
+    val locationList: StateFlow<List<CharacterCardModel>> = _locationList
+
+
     fun loadDetailState(id: Int) {
         viewModelScope.launch {
             useCases.getSingleCharacterUseCase(id).collect { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        _detailScreenState.update { detailScreenUIStates ->
-                            detailScreenUIStates.copy(hasError = true, isLoading = false)
-                        }
+
+                result.onError {
+                    _detailScreenState.update { detailScreenUIStates ->
+                        detailScreenUIStates.copy(hasError = true, isLoading = false)
                     }
-                    is Resource.Loading -> {
-                        _detailScreenState.update { detailScreenUIStates ->
-                            detailScreenUIStates.copy(isLoading = true)
-                        }
+                }
+
+                result.onLoading {
+                    _detailScreenState.update { detailScreenUIStates ->
+                        detailScreenUIStates.copy(isLoading = true)
                     }
-                    is Resource.Success -> {
-                        delay(1000)
-                        _detailScreenState.update { detailScreenUIStates ->
-                            detailScreenUIStates.copy(
-                                model = result.data,
-                                isLoading = false,
-                                hasError = false
-                            )
-                        }
+                }
+
+                result.onSuccess {
+                    loadDetailsForRecyclerview(
+                        it.data.locationUrl.getLastPartOfUrl().toInt()
+                    )
+                    _detailScreenState.update { detailScreenUIStates ->
+                        detailScreenUIStates.copy(
+                            model = it.data,
+                            isLoading = false,
+                            hasError = false
+                        )
                     }
                 }
             }
         }
     }
 
-    fun loadDetailsForRecyclerview() {
-
+    private suspend fun loadDetailsForRecyclerview(locationId: Int) {
+        useCases.getCharacterLocationUseCase(locationId).collectLatest { resource ->
+            resource.onSuccess {
+                useCases.getMultipleCharactersUseCase(
+                    it.data.residents.getLastPartsOfUrls().map { it.toInt() })
+                    .collectLatest { resource2 ->
+                        if (resource2 is Resource.Success) {
+                            _locationList.update { resource2.data }
+                        }
+                    }
+            }
+        }
     }
 }

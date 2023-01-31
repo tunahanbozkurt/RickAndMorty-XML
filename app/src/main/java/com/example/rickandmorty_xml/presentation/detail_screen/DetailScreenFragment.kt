@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.databinding.FragmentDetailScreenBinding
+import com.example.rickandmorty_xml.presentation.adapters.CharactersPagingAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,7 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
     DetailScreenVM::class.java
 ) {
     private lateinit var args: DetailScreenFragmentArgs
+    private lateinit var charactersPagingAdapter: CharactersPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,14 +73,24 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
                 states.model?.species
             )
 
-            val isAliveDotResource = when(states.model?.isAlive) {
-                "Alive" -> { R.drawable.green_dot }
-                "Dead" -> { R.drawable.red_dot }
-                else -> { R.drawable.gray_dot }
+            val isAliveDotResource = when (states.model?.isAlive) {
+                "Alive" -> {
+                    R.drawable.green_dot
+                }
+                "Dead" -> {
+                    R.drawable.red_dot
+                }
+                else -> {
+                    R.drawable.gray_dot
+                }
             }
 
             isAliveDot.setImageResource(isAliveDotResource)
         }
+    }
+
+    private fun setupNestedRecylerViews() {
+
     }
 }
 
