@@ -2,6 +2,7 @@ package com.example.rickandmorty_xml.data.remote
 
 import com.example.rickandmorty_xml.data.remote.dto.getAllCharacters.CharactersListDTO
 import com.example.rickandmorty_xml.data.remote.dto.getSingleCharacter.SingleCharacterDTO
+import com.example.rickandmorty_xml.data.remote.dto.getSingleLocation.CharacterLocationDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,4 +19,9 @@ interface RickAndMortyAPI {
     suspend fun getSingleCharacter(
         @Path("id") id: Int
     ): Response<SingleCharacterDTO>
+
+    @GET("api/location/{id}")
+    suspend fun getSingleLocation(
+        @Path("id") id: Int
+    ): Response<CharacterLocationDTO>
 }

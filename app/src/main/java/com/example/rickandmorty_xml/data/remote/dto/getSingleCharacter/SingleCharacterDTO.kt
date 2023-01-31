@@ -1,6 +1,7 @@
 package com.example.rickandmorty_xml.data.remote.dto.getSingleCharacter
 
 import com.example.rickandmorty_xml.domain.model.CharacterDetailModel
+import com.example.rickandmorty_xml.util.uppercaseFirst
 
 data class SingleCharacterDTO(
     val created: String,
@@ -20,9 +21,9 @@ data class SingleCharacterDTO(
     fun toCharacterDetailModel(): CharacterDetailModel {
         return CharacterDetailModel(
             id = id,
-            characterName = name,
-            isAlive = status,
-            species = species,
+            characterName = name.uppercaseFirst(),
+            isAlive = status.uppercaseFirst(),
+            species = species.uppercaseFirst(),
             imageUrl = image
         )
     }

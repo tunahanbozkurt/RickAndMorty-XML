@@ -51,4 +51,8 @@ class DetailScreenVM @Inject constructor(
             }
         }
     }
+
+    fun loadDetailsForRecyclerview() {
+
+    }
 }

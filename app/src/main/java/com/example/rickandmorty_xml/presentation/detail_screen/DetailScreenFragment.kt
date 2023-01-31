@@ -2,6 +2,7 @@ package com.example.rickandmorty_xml.presentation.detail_screen
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -9,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.databinding.FragmentDetailScreenBinding
-import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,18 +21,25 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
     FragmentDetailScreenBinding::inflate,
     DetailScreenVM::class.java
 ) {
-
+    private lateinit var args: DetailScreenFragmentArgs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val args: DetailScreenFragmentArgs by navArgs()
+        args = navArgs<DetailScreenFragmentArgs>().value
         viewModel.loadDetailState(args.characterId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        handleError()
         subscribe()
+    }
+
+    private fun handleError() {
+        binding.errorLayout.retry.setOnClickListener {
+            viewModel.loadDetailState(args.characterId)
+        }
     }
 
     private fun subscribe() {
@@ -49,10 +56,11 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
         binding.apply {
 
             binding.loadingLayout.setupLoadingScreen(states.isLoading)
+            binding.errorLayout.errorView.isVisible = states.hasError
 
             characterImage.load(states.model?.imageUrl) {
                 crossfade(true)
-                crossfade(PagingAdapter.CROSS_FADE_MILLIS)
+                crossfade(1000)
             }
 
             characterName.text = states.model?.characterName
@@ -64,8 +72,8 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
             )
 
             val isAliveDotResource = when(states.model?.isAlive) {
-                PagingAdapter.ALIVE -> { R.drawable.green_dot }
-                PagingAdapter.DEAD -> { R.drawable.red_dot }
+                "Alive" -> { R.drawable.green_dot }
+                "Dead" -> { R.drawable.red_dot }
                 else -> { R.drawable.gray_dot }
             }
 

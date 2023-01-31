@@ -1,10 +1,9 @@
 package com.example.rickandmorty_xml.di
 
 import com.example.rickandmorty_xml.data.remote.RickAndMortyAPI
-import com.example.rickandmorty_xml.data.remote.repository.AllCharactersRepositoryImpl
-import com.example.rickandmorty_xml.data.remote.repository.SingleCharacterRepositoryImpl
-import com.example.rickandmorty_xml.domain.repository.AllCharactersRepository
-import com.example.rickandmorty_xml.domain.repository.SingleCharacterRepository
+import com.example.rickandmorty_xml.data.remote.dataSource.CharactersDataSourceImpl
+import com.example.rickandmorty_xml.data.remote.repository.CharactersRepositoryImpl
+import com.example.rickandmorty_xml.domain.dataSource.CharactersDataSource
 import com.example.rickandmorty_xml.domain.usecase.GetAllCharactersUseCase
 import com.example.rickandmorty_xml.domain.usecase.GetSingleCharacterUseCase
 import com.example.rickandmorty_xml.domain.usecase.UseCases
@@ -33,28 +32,25 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAllCharactersRepo(api: RickAndMortyAPI): AllCharactersRepository {
-        return AllCharactersRepositoryImpl(api = api)
+    fun provideUseCases(repository: CharactersRepositoryImpl): UseCases {
+        return UseCases(
+            getAllCharactersUseCase = GetAllCharactersUseCase(repository),
+            getSingleCharacterUseCase = GetSingleCharacterUseCase(repository)
+        )
     }
 
     @Provides
     @Singleton
-    fun provideSingleCharacterRepo(
+    fun provideCharactersDataSource(
         api: RickAndMortyAPI,
         @Dispatchers.DispatcherIO dispatcherIO: CoroutineDispatcher
-    ): SingleCharacterRepository {
-        return SingleCharacterRepositoryImpl(api = api, dispatcherIO)
+    ): CharactersDataSource {
+        return CharactersDataSourceImpl(api = api, dispatcherIO = dispatcherIO)
     }
 
     @Provides
     @Singleton
-    fun provideUseCases(
-        allCharactersRepository: AllCharactersRepository,
-        singleCharacterRepository: SingleCharacterRepository
-    ): UseCases {
-        return UseCases(
-            getAllCharactersUseCase = GetAllCharactersUseCase(allCharactersRepository),
-            getSingleCharacterUseCase = GetSingleCharacterUseCase(singleCharacterRepository)
-        )
+    fun provideCharactersRepository(dataSource: CharactersDataSource): CharactersRepositoryImpl {
+        return CharactersRepositoryImpl(dataSource)
     }
 }

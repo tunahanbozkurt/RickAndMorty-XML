@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmorty_xml.databinding.FragmentMainScreenBinding
-import com.example.rickandmorty_xml.presentation.adapters.PagingAdapter
+import com.example.rickandmorty_xml.presentation.adapters.CharactersPagingAdapter
 import com.example.rickandmorty_xml.presentation.adapters.PagingLoadStateAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
@@ -24,7 +24,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     FragmentMainScreenBinding::inflate,
     MainScreenVM::class.java
 ) {
-    private lateinit var pagingAdapter: PagingAdapter
+    private lateinit var charactersPagingAdapter: CharactersPagingAdapter
     private lateinit var pagingLoadStateAdapter: PagingLoadStateAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
     private fun setupLayout() {
         binding.errorViewBinding.retry.setOnClickListener {
-            pagingAdapter.retry()
+            charactersPagingAdapter.retry()
         }
     }
 
@@ -47,10 +47,10 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
     }
 
     private fun setupRecyclerViewAdapter() {
-        pagingAdapter = PagingAdapter(this::onItemClickListener)
-        pagingLoadStateAdapter = PagingLoadStateAdapter { pagingAdapter.retry() }
+        charactersPagingAdapter = CharactersPagingAdapter(this::onItemClickListener)
+        pagingLoadStateAdapter = PagingLoadStateAdapter { charactersPagingAdapter.retry() }
         binding.recyclerView.apply {
-            adapter = pagingAdapter.withLoadStateHeaderAndFooterAndConfig(
+            adapter = charactersPagingAdapter.withLoadStateHeaderAndFooterAndConfig(
                 footer = pagingLoadStateAdapter
             )
         }
@@ -73,13 +73,13 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.pagedItems.collectLatest(pagingAdapter::submitData)
+                    viewModel.pagedItems.collectLatest(charactersPagingAdapter::submitData)
                 }
 
                 launch {
-                    pagingAdapter.loadStateFlow.collectLatest {
-                        val isError = it.refresh is LoadState.Error && pagingAdapter.itemCount == 0
-                        val isLoading = it.refresh is LoadState.Loading && pagingAdapter.itemCount == 0
+                    charactersPagingAdapter.loadStateFlow.collectLatest {
+                        val isError = it.refresh is LoadState.Error && charactersPagingAdapter.itemCount == 0
+                        val isLoading = it.refresh is LoadState.Loading && charactersPagingAdapter.itemCount == 0
                         binding.errorViewBinding.errorView.isVisible = isError
                         binding.loadingLayout.setupLoadingScreen(isLoading)
                     }

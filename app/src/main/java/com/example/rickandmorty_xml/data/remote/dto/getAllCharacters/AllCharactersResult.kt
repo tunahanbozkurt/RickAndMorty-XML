@@ -1,6 +1,7 @@
 package com.example.rickandmorty_xml.data.remote.dto.getAllCharacters
 
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
+import com.example.rickandmorty_xml.util.uppercaseFirst
 
 data class AllCharactersResult(
     val created: String,
@@ -20,12 +21,12 @@ data class AllCharactersResult(
     fun toCharacterCardModel(): CharacterCardModel {
         return CharacterCardModel(
             id = id,
-            characterName = name.replaceFirstChar { it.uppercase() },
+            characterName = name.uppercaseFirst(),
             imageUrl = image,
-            isAlive = status.replaceFirstChar { it.uppercase() },
-            origin = origin.name.replaceFirstChar { it.uppercase() },
-            species = species.replaceFirstChar { it.uppercase() },
-            lastKnownLocation = location.name.replaceFirstChar { it.uppercase() }
+            isAlive = status.uppercaseFirst(),
+            origin = origin.name.uppercaseFirst(),
+            species = species.uppercaseFirst(),
+            lastKnownLocation = location.name.uppercaseFirst()
         )
     }
 }

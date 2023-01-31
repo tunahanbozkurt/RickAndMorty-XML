@@ -20,42 +20,67 @@
         app:shapeAppearanceOverlay="@style/fullyRoundedImageView" />
 
 
-    <TextView
-        android:id="@+id/character_name"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="36dp"
-        android:text="Morty Smith"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.13"
+        android:background="@drawable/detail_card_rounded_background"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/character_image"
         app:layout_constraintEnd_toEndOf="@+id/character_image"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/character_image" />
+        app:layout_constraintStart_toStartOf="@+id/character_image">
 
-    <ImageView
-        android:id="@+id/isAliveDot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/content_description"
-        android:src="@drawable/green_dot"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/character_name"
-        app:layout_constraintTop_toBottomOf="@+id/character_name" />
+        <TextView
+            android:id="@+id/character_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Morty Smith"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/character_image"
+            app:layout_constraintEnd_toEndOf="@+id/character_image"
+            app:layout_constraintStart_toStartOf="@+id/character_image" />
 
-    <TextView
-        android:id="@+id/status_and_species"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/isAliveDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/green_dot" />
+
+            <TextView
+                android:id="@+id/status_and_species"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Alive - Human"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/details_recyclerview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Alive - Human"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
-        app:layout_constraintEnd_toEndOf="@+id/character_name"
-        app:layout_constraintStart_toEndOf="@+id/isAliveDot"
-        app:layout_constraintTop_toTopOf="@+id/isAliveDot" />
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/character_image" />
 
     <include
         android:id="@+id/loading_layout"
@@ -66,6 +91,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_message"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
