@@ -48,10 +48,8 @@ class DetailScreenVM @Inject constructor(
                 }
 
                 result.onSuccess { resource ->
-                    val id = resource.data.locationUrl.getLastPartOfUrl()?.toInt()
-                    id?.let {id ->
-                        loadDetailsForRecyclerview(id)
-                    }
+                    val characterIdFromUrl = resource.data.locationUrl.getLastPartOfUrl()?.toInt()
+                    loadDetailsForRecyclerview(characterIdFromUrl)
                     _detailScreenState.update { detailScreenUIStates ->
                         detailScreenUIStates.copy(
                             model = resource.data,
@@ -64,17 +62,18 @@ class DetailScreenVM @Inject constructor(
         }
     }
 
-    private suspend fun loadDetailsForRecyclerview(locationId: Int) {
-        useCases.getCharacterLocationUseCase(locationId).collectLatest { resource ->
-            resource.onSuccess {
-                getMultipleCharacters(it.data)
+    private suspend fun loadDetailsForRecyclerview(locationId: Int?) {
+        if (locationId != null) {
+            useCases.getCharacterLocationUseCase(locationId).collectLatest { resource ->
+                resource.onSuccess {
+                    getMultipleCharacters(it.data)
+                }
             }
         }
     }
 
     private suspend fun getMultipleCharacters(data: CharacterLocation) {
         val characterIds = data.residents.getLastPartsOfUrls().map { it.toInt() }
-
         useCases.getMultipleCharactersUseCase(characterIds)
             .collectLatest { resource ->
                 resource.onSuccess { list ->

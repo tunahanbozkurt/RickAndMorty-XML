@@ -64,8 +64,11 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
     private fun setupLayoutManager() {
         binding.recyclerView.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL,
+                false
+            )
         }
     }
 
@@ -78,8 +81,12 @@ class MainScreenFragment : BaseFragment<FragmentMainScreenBinding, MainScreenVM>
 
                 launch {
                     charactersPagingAdapter.loadStateFlow.collectLatest {
-                        val isError = it.refresh is LoadState.Error && charactersPagingAdapter.itemCount == 0
-                        val isLoading = it.refresh is LoadState.Loading && charactersPagingAdapter.itemCount == 0
+                        val isError =
+                            it.refresh is LoadState.Error && charactersPagingAdapter.itemCount == 0
+
+                        val isLoading =
+                            it.refresh is LoadState.Loading && charactersPagingAdapter.itemCount == 0
+
                         binding.errorViewBinding.errorView.isVisible = isError
                         binding.loadingLayout.setupLoadingScreen(isLoading)
                     }

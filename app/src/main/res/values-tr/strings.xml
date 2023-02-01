@@ -6,4 +6,11 @@
     <string name="content_description">null</string>
     <string name="couldnt_loaded_message">Yüklenemedi</string>
     <string name="isAliveSpecies">%1$s - %2$s</string>
+    <string name="last_known_location">Bilinen konum:</string>
+    <string name="origin_text">Köken:</string>
+    <string name="isAlive_species_text">Hayatta - Tür</string>
+    <string name="location">Citadel of Ricks</string>
+    <string name="origin">The Ricklantis Mixup</string>
+    <string name="name">Rick Sanchez</string>
+    <string name="same_location">AYNI LOKASYON</string>
 </resources>

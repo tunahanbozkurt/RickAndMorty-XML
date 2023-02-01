@@ -13,8 +13,8 @@ import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.databinding.FragmentDetailScreenBinding
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
-import com.example.rickandmorty_xml.presentation.adapters.CharactersPagingAdapter
-import com.example.rickandmorty_xml.presentation.adapters.DetailsAdapter
+import com.example.rickandmorty_xml.presentation.adapters.CharacterAdapter
+import com.example.rickandmorty_xml.presentation.adapters.CharacterCardViewHolder
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,6 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
     DetailScreenVM::class.java
 ) {
     private lateinit var args: DetailScreenFragmentArgs
-    private lateinit var charactersPagingAdapter: CharactersPagingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,23 +81,22 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
             )
 
             val isAliveDotResource = when (states.model?.isAlive) {
-                "Alive" -> {
+                CharacterCardViewHolder.ALIVE -> {
                     R.drawable.green_dot
                 }
-                "Dead" -> {
+                CharacterCardViewHolder.DEAD -> {
                     R.drawable.red_dot
                 }
                 else -> {
                     R.drawable.gray_dot
                 }
             }
-
             isAliveDot.setImageResource(isAliveDotResource)
         }
     }
 
     private fun setupNestedRecylerViews(list: List<CharacterCardModel>) {
-        binding.detailsRecyclerview.adapter = DetailsAdapter(list) { characterId ->
+        binding.detailsRecyclerview.adapter = CharacterAdapter(list) { characterId ->
             val action = DetailScreenFragmentDirections
                 .actionDetailScreenFragmentSelf(characterId)
             findNavController().navigate(action)

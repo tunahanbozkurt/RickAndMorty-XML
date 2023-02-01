@@ -4,9 +4,8 @@
     android:id="@+id/character_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="14dp"
-    android:layout_marginTop="14dp"
-    android:layout_marginEnd="14dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
     android:background="@drawable/rounded_card_background">
 
 
@@ -27,7 +26,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="10dp"
-        android:text="Cop Rick"
+        android:text="@string/name"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -50,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Alive - Human"
+        android:text="@string/isAlive_species_text"
         android:textColor="@color/white"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
@@ -59,12 +58,12 @@
         app:layout_constraintTop_toTopOf="@+id/isAliveDot" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/last_known_location_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Last known Location:"
-        android:textColor="#9E9E9E"
+        android:text="@string/last_known_location"
+        android:textColor="@color/on_dark_background"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="@+id/isAliveAndSpecies"
         app:layout_constraintStart_toStartOf="@+id/isAliveDot"
@@ -75,20 +74,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Citadel of Ricks"
+        android:text="@string/location"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="@+id/last_known_location_text"
+        app:layout_constraintStart_toStartOf="@+id/last_known_location_text"
+        app:layout_constraintTop_toBottomOf="@+id/last_known_location_text" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Origin:"
-        android:textColor="#9E9E9E"
+        android:text="@string/origin_text"
+        android:textColor="@color/on_dark_background"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="@+id/last_known_location"
         app:layout_constraintStart_toStartOf="@+id/last_known_location"
@@ -100,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
-        android:text="The Ricklantis Mixup"
+        android:text="@string/origin"
         android:textColor="@color/white"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"

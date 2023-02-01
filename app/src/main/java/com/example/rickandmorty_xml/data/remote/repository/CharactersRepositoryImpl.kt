@@ -75,6 +75,8 @@ class CharactersRepositoryImpl(
                         it.toCharacterCardModel()
                     }
                     emit(Resource.Success(model))
+                } else {
+                    throw HttpException(response)
                 }
             } catch (e: HttpException) {
                 emit(Resource.Error(e.message()))

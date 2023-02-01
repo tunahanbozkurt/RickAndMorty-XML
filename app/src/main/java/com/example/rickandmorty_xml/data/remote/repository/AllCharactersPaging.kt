@@ -22,7 +22,7 @@ class AllCharactersPaging(
             LoadResult.Page(
                 data = data,
                 prevKey = null,
-                nextKey = currentPage.plus(1),
+                nextKey = if (currentPage != 42) currentPage.plus(1) else null,
             )
 
         } catch (e: HttpException) {
