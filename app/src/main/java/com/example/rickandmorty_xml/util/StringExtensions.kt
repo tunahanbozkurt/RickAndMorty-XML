@@ -7,8 +7,11 @@ fun String.uppercaseFirst(): String {
    return this.replaceFirstChar { it.uppercase() }
 }
 
-fun String.getLastPartOfUrl(): String {
-   return this.split("/").last()
+fun String.getLastPartOfUrl(): String? {
+   if (this.isNotEmpty()) {
+      return this.split("/").last()
+   }
+   return null
 }
 
 fun List<String>.getLastPartsOfUrls(): List<String> {

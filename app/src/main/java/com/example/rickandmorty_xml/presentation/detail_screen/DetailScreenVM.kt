@@ -2,6 +2,7 @@ package com.example.rickandmorty_xml.presentation.detail_screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
+import com.example.rickandmorty_xml.domain.model.CharacterLocation
 import com.example.rickandmorty_xml.domain.usecase.UseCases
 import com.example.rickandmorty_xml.presentation.base.BaseViewModel
 import com.example.rickandmorty_xml.util.*
@@ -46,13 +47,14 @@ class DetailScreenVM @Inject constructor(
                     }
                 }
 
-                result.onSuccess {
-                    loadDetailsForRecyclerview(
-                        it.data.locationUrl.getLastPartOfUrl().toInt()
-                    )
+                result.onSuccess { resource ->
+                    val id = resource.data.locationUrl.getLastPartOfUrl()?.toInt()
+                    id?.let {id ->
+                        loadDetailsForRecyclerview(id)
+                    }
                     _detailScreenState.update { detailScreenUIStates ->
                         detailScreenUIStates.copy(
-                            model = it.data,
+                            model = resource.data,
                             isLoading = false,
                             hasError = false
                         )
@@ -65,14 +67,19 @@ class DetailScreenVM @Inject constructor(
     private suspend fun loadDetailsForRecyclerview(locationId: Int) {
         useCases.getCharacterLocationUseCase(locationId).collectLatest { resource ->
             resource.onSuccess {
-                useCases.getMultipleCharactersUseCase(
-                    it.data.residents.getLastPartsOfUrls().map { it.toInt() })
-                    .collectLatest { resource2 ->
-                        if (resource2 is Resource.Success) {
-                            _locationList.update { resource2.data }
-                        }
-                    }
+                getMultipleCharacters(it.data)
             }
         }
+    }
+
+    private suspend fun getMultipleCharacters(data: CharacterLocation) {
+        val characterIds = data.residents.getLastPartsOfUrls().map { it.toInt() }
+
+        useCases.getMultipleCharactersUseCase(characterIds)
+            .collectLatest { resource ->
+                resource.onSuccess { list ->
+                    _locationList.update { list.data }
+                }
+            }
     }
 }

@@ -1,115 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/character_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="14dp"
+    android:layout_marginTop="14dp"
+    android:layout_marginEnd="14dp"
+    android:background="@drawable/rounded_card_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/character_card"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/character_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundedImageView" />
+
+    <TextView
+        android:id="@+id/character_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/rounded_card_background">
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:text="Cop Rick"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/character_image"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/character_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/roundedImageView" />
+    <ImageView
+        android:id="@+id/isAliveDot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/green_dot"
+        app:layout_constraintStart_toStartOf="@+id/character_name"
+        app:layout_constraintTop_toBottomOf="@+id/character_name" />
 
-        <TextView
-            android:id="@+id/character_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:text="Cop Rick"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/character_image"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/isAliveAndSpecies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Alive - Human"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
+        app:layout_constraintEnd_toEndOf="@+id/character_name"
+        app:layout_constraintStart_toEndOf="@+id/isAliveDot"
+        app:layout_constraintTop_toTopOf="@+id/isAliveDot" />
 
-        <ImageView
-            android:id="@+id/isAliveDot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/content_description"
-            android:src="@drawable/green_dot"
-            app:layout_constraintStart_toStartOf="@+id/character_name"
-            app:layout_constraintTop_toBottomOf="@+id/character_name" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Last known Location:"
+        android:textColor="#9E9E9E"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/isAliveAndSpecies"
+        app:layout_constraintStart_toStartOf="@+id/isAliveDot"
+        app:layout_constraintTop_toBottomOf="@+id/isAliveAndSpecies" />
 
-        <TextView
-            android:id="@+id/isAliveAndSpecies"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Alive - Human"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@+id/isAliveDot"
-            app:layout_constraintEnd_toEndOf="@+id/character_name"
-            app:layout_constraintStart_toEndOf="@+id/isAliveDot"
-            app:layout_constraintTop_toTopOf="@+id/isAliveDot" />
+    <TextView
+        android:id="@+id/last_known_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Citadel of Ricks"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Last known Location:"
-            android:textColor="#9E9E9E"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toEndOf="@+id/isAliveAndSpecies"
-            app:layout_constraintStart_toStartOf="@+id/isAliveDot"
-            app:layout_constraintTop_toBottomOf="@+id/isAliveAndSpecies" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Origin:"
+        android:textColor="#9E9E9E"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/last_known_location"
+        app:layout_constraintStart_toStartOf="@+id/last_known_location"
+        app:layout_constraintTop_toBottomOf="@+id/last_known_location" />
 
-        <TextView
-            android:id="@+id/last_known_location"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Citadel of Ricks"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView2"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+    <TextView
+        android:id="@+id/origin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="The Ricklantis Mixup"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Origin:"
-            android:textColor="#9E9E9E"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toEndOf="@+id/last_known_location"
-            app:layout_constraintStart_toStartOf="@+id/last_known_location"
-            app:layout_constraintTop_toBottomOf="@+id/last_known_location" />
-
-        <TextView
-            android:id="@+id/origin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="The Ricklantis Mixup"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

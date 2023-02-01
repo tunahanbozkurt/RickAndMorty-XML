@@ -21,5 +21,8 @@
         tools:layout="@layout/fragment_detail_screen" >
         <argument android:name="characterId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailScreenFragment_self"
+            app:destination="@id/detailScreenFragment" />
     </fragment>
 </navigation>

@@ -6,11 +6,15 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.example.rickandmorty_xml.R
 import com.example.rickandmorty_xml.databinding.FragmentDetailScreenBinding
+import com.example.rickandmorty_xml.domain.model.CharacterCardModel
 import com.example.rickandmorty_xml.presentation.adapters.CharactersPagingAdapter
+import com.example.rickandmorty_xml.presentation.adapters.DetailsAdapter
 import com.example.rickandmorty_xml.presentation.base.BaseFragment
 import com.example.rickandmorty_xml.util.setupLoadingScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +53,10 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.detailScreenState.collect(this@DetailScreenFragment::setupDetails)
+                }
+
+                launch {
+                    viewModel.locationList.collect(this@DetailScreenFragment::setupNestedRecylerViews)
                 }
             }
         }
@@ -89,8 +97,17 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
         }
     }
 
-    private fun setupNestedRecylerViews() {
-
+    private fun setupNestedRecylerViews(list: List<CharacterCardModel>) {
+        binding.detailsRecyclerview.adapter = DetailsAdapter(list) { characterId ->
+            val action = DetailScreenFragmentDirections
+                .actionDetailScreenFragmentSelf(characterId)
+            findNavController().navigate(action)
+        }
+        binding.detailsRecyclerview.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL,
+            false
+        )
     }
 }
 

@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty_xml.databinding.CharacterCardBinding
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
 
-class DetailsAdapter(
+class CharacterAdapter(
     private val characterList: List<CharacterCardModel>,
-    private val onItemClickListener: (Int) -> Unit,
+    private val onItemClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<CharacterCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterCardViewHolder {
