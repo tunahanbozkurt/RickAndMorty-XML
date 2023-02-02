@@ -69,7 +69,7 @@ class CharactersRepositoryImpl(
             emit(Resource.Loading())
 
             try {
-                val response = dataSource.getMultipleCharacter(idList)
+                val response = dataSource.getMultipleCharacters(idList)
                 if (response.isSuccessful) {
                     val model = response.body()!!.map {
                         it.toCharacterCardModel()

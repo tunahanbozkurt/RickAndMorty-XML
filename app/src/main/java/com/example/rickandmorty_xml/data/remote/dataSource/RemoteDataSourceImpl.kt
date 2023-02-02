@@ -40,7 +40,7 @@ class RemoteDataSourceImpl(
         }
     }
 
-    override suspend fun getMultipleCharacter(idList: List<Int>): Response<MultipleCharacterDTO> {
+    override suspend fun getMultipleCharacters(idList: List<Int>): Response<MultipleCharacterDTO> {
         return withContext(dispatcherIO) {
             api.getMultipleCharacters(idList)
         }

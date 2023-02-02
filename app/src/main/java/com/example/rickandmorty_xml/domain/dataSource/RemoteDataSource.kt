@@ -12,5 +12,5 @@ interface RemoteDataSource {
     fun getAllCharacters(pageSize: Int): Flow<PagingData<AllCharactersResult>>
     suspend fun getCharacterById(id: Int): Response<SingleCharacterDTO>
     suspend fun getCharacterLocationById(id: Int): Response<CharacterLocationDTO>
-    suspend fun getMultipleCharacter(idList: List<Int>): Response<MultipleCharacterDTO>
+    suspend fun getMultipleCharacters(idList: List<Int>): Response<MultipleCharacterDTO>
 }
