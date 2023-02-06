@@ -1,6 +1,6 @@
 package com.example.rickandmorty_xml.domain.model
 
-data class CharacterLocation(
+data class CharacterLocationModel(
     val id: Int,
     val name: String,
     val dimension: String,

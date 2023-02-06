@@ -1,6 +1,5 @@
 package com.example.rickandmorty_xml.util
 
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
@@ -8,21 +7,9 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import com.example.rickandmorty_xml.databinding.LoadingScreenBinding
 
-fun View.setVisible() {
-    this.visibility = View.VISIBLE
-}
-
-fun View.setInvisible() {
-    this.visibility = View.INVISIBLE
-}
-
-fun View.setGone() {
-    this.visibility = View.GONE
-}
-
 fun LoadingScreenBinding.setupLoadingScreen(isLoading: Boolean, durationMillis: Long = 1000) {
     this.loadingScreen.isVisible = isLoading
-    this.loadingImage.rotateIndefinitely(isLoading)
+    this.loadingImage.rotateIndefinitely(isLoading, durationMillis)
 }
 
 fun ImageView.rotateIndefinitely(isActive: Boolean, durationMillis: Long = 1000) {

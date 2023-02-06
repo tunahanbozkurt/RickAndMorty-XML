@@ -2,7 +2,7 @@ package com.example.rickandmorty_xml.presentation.detail_screen
 
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
-import com.example.rickandmorty_xml.domain.model.CharacterLocation
+import com.example.rickandmorty_xml.domain.model.CharacterLocationModel
 import com.example.rickandmorty_xml.domain.usecase.UseCases
 import com.example.rickandmorty_xml.presentation.base.BaseViewModel
 import com.example.rickandmorty_xml.util.*
@@ -19,17 +19,15 @@ class DetailScreenVM @Inject constructor(
     private val useCases: UseCases
 ) : BaseViewModel() {
 
-
     private val _detailScreenState: MutableStateFlow<DetailScreenUIStates> = MutableStateFlow(
         DetailScreenUIStates()
     )
     val detailScreenState: StateFlow<DetailScreenUIStates> = _detailScreenState
 
-    private val _locationList: MutableStateFlow<List<CharacterCardModel>> = MutableStateFlow(
+    private val _locationListState: MutableStateFlow<List<CharacterCardModel>> = MutableStateFlow(
         emptyList()
     )
-    val locationList: StateFlow<List<CharacterCardModel>> = _locationList
-
+    val locationListState: StateFlow<List<CharacterCardModel>> = _locationListState
 
     fun loadDetailState(id: Int) {
         viewModelScope.launch {
@@ -72,12 +70,12 @@ class DetailScreenVM @Inject constructor(
         }
     }
 
-    private suspend fun getMultipleCharacters(data: CharacterLocation) {
+    private suspend fun getMultipleCharacters(data: CharacterLocationModel) {
         val characterIds = data.residents.getLastPartsOfUrls().map { it.toInt() }
         useCases.getMultipleCharactersUseCase(characterIds)
             .collectLatest { resource ->
                 resource.onSuccess { list ->
-                    _locationList.update { list.data }
+                    _locationListState.update { list.data }
                 }
             }
     }

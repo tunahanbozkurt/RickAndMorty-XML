@@ -1,6 +1,6 @@
 package com.example.rickandmorty_xml.data.remote.dto.getSingleLocation
 
-import com.example.rickandmorty_xml.domain.model.CharacterLocation
+import com.example.rickandmorty_xml.domain.model.CharacterLocationModel
 import com.example.rickandmorty_xml.util.uppercaseFirst
 
 data class CharacterLocationDTO(
@@ -13,8 +13,8 @@ data class CharacterLocationDTO(
     val residents: List<String>
 ) {
 
-    fun toCharacterLocation(): CharacterLocation {
-        return CharacterLocation(
+    fun toCharacterLocation(): CharacterLocationModel {
+        return CharacterLocationModel(
             id = id,
             name = name.uppercaseFirst(),
             dimension = dimension.uppercaseFirst(),

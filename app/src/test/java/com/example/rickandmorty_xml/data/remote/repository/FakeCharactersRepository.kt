@@ -1,8 +1,7 @@
 package com.example.rickandmorty_xml.data.remote.repository
 
 import androidx.paging.PagingData
-import androidx.paging.map
-import com.example.rickandmorty_xml.domain.dataSource.RemoteDataSource
+import com.example.rickandmorty_xml.data.remote.dataSource.FakeRemoteDataSource
 import com.example.rickandmorty_xml.domain.model.CharacterCardModel
 import com.example.rickandmorty_xml.domain.model.CharacterDetailModel
 import com.example.rickandmorty_xml.domain.model.CharacterLocationModel
@@ -10,23 +9,15 @@ import com.example.rickandmorty_xml.domain.repository.CharactersRepository
 import com.example.rickandmorty_xml.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 
-const val EXCEPTION_MESSAGE = "Response body is null"
-
-class CharactersRepositoryImpl(
-    private val dataSource: RemoteDataSource
+class FakeCharactersRepository(
+    private val dataSource: FakeRemoteDataSource
 ) : CharactersRepository {
 
-
     override fun getAllCharacters(pageSize: Int): Flow<PagingData<CharacterCardModel>> {
-        return dataSource.getAllCharacters(pageSize).map { pagingData ->
-            pagingData.map {
-                it.toCharacterCardModel()
-            }
-        }
+        TODO()
     }
 
     override fun getCharacterById(id: Int): Flow<Resource<CharacterDetailModel>> {
@@ -36,7 +27,7 @@ class CharactersRepositoryImpl(
                 val response = dataSource.getCharacterById(id)
                 if (response.isSuccessful) {
                     val model = response.body()?.toCharacterDetailModel()
-                        ?: throw Exception(EXCEPTION_MESSAGE)
+                        ?: throw Exception("Response body is null")
                     emit(Resource.Success(model))
                 } else {
                     throw HttpException(response)
@@ -58,7 +49,7 @@ class CharactersRepositoryImpl(
                 val response = dataSource.getCharacterLocationById(id)
                 if (response.isSuccessful) {
                     val model = response.body()?.toCharacterLocation()
-                        ?: throw Exception(EXCEPTION_MESSAGE)
+                        ?: throw Exception("Response body is null")
                     emit(Resource.Success(model))
                 } else {
                     throw HttpException(response)
@@ -81,7 +72,7 @@ class CharactersRepositoryImpl(
                 if (response.isSuccessful) {
                     val model = response.body()?.map {
                         it.toCharacterCardModel()
-                    } ?: throw Exception(EXCEPTION_MESSAGE)
+                    } ?: throw Exception("Response body is null")
                     emit(Resource.Success(model))
                 } else {
                     throw HttpException(response)

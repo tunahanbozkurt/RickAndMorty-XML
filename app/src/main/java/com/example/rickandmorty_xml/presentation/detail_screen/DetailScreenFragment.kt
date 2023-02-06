@@ -55,7 +55,7 @@ class DetailScreenFragment : BaseFragment<FragmentDetailScreenBinding, DetailScr
                 }
 
                 launch {
-                    viewModel.locationList.collect(this@DetailScreenFragment::setupNestedRecylerViews)
+                    viewModel.locationListState.collect(this@DetailScreenFragment::setupNestedRecylerViews)
                 }
             }
         }
